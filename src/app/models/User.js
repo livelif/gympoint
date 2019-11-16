@@ -27,6 +27,15 @@ class User extends Model {
     return bcrypt.compare(password, this.password_hash);
   }
 
+  static async isAdmin(userId) {
+    const user = await User.findByPk(userId);
+
+    if (user.email === 'admin@gympoint.com') {
+      return true;
+    }
+
+    return false;
+  }
 }
 
 export default User;
