@@ -13,6 +13,9 @@ routes.post('/users', UserController.store);
 
 routes.use(authMiddlewares);
 routes.post('/students', StudentController.store);
+
 routes.post('/plans', PlanController.store);
+routes.get('/plans', PlanController.index);
+routes.delete('/plans/:id', PlanController.delete);
 
 export default routes;
