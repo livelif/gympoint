@@ -1,5 +1,5 @@
 import Student from '../models/Student';
-import User from '../models/User'
+import User from '../models/User';
 
 class StudentController {
   async store(req, res) {
