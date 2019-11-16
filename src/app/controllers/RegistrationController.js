@@ -1,5 +1,8 @@
 import * as Yup from 'yup';
 import Plan from '../models/Plan';
+import InformationMail from '../jobs/InformationMail';
+import Queue from '../../lib/Queue';
+import Student from '../models/Student';
 
 class RegistrationManagementController {
   async store(req, res) {
@@ -14,13 +17,21 @@ class RegistrationManagementController {
     }
 
     const plan = await Plan.findByPk(req.body.plan_id);
-    
+
     const { price, duration } = plan;
     const endDate = new Date();
     endDate.setMonth(endDate.getMonth() + duration);
 
-    const totalPrice = calculateTotalPrice(duration, price);
-    
+    const totalPrice = RegistrationManagementController.calculateTotalPrice(
+      duration,
+      price
+    );
+    const student = await Student.findByPk(req.userId);
+
+    Queue.add(InformationMail.key, {
+      student,
+    });
+
     return res.json({ ok: 'ok' });
   }
 
