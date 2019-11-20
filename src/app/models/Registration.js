@@ -19,10 +19,34 @@ class Registration extends Model {
   static associate(models) {
     this.belongsTo(models.Student, {
       foreignKey: 'student_id',
-      as: 'student_id',
+      as: 'student',
     });
-    this.belongsTo(models.Plan, { foreignKey: 'plan_id', as: 'plan_id' });
+    this.belongsTo(models.Plan, { foreignKey: 'plan_id', as: 'plan' });
+  }
+
+  static async userHavePlan(studentId) {
+    const registration = await Registration.findOne({
+      where: {
+        student_id: studentId,
+      },
+    });
+
+    if (registration) {
+      return true;
+    }
+
+    return false;
+  }
+
+  static async getRegisterOfStudent(studentId) {
+    const plan = await Registration.findOne({
+      where: {
+        student_id: studentId,
+      },
+    });
+
+    return plan;
   }
 }
 
-export default new Registration();
+export default Registration;
