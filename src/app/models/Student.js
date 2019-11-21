@@ -17,6 +17,16 @@ class Student extends Model {
     );
   }
 
+  static async studentExist(studentId) {
+    const student = await Student.findByPk(studentId);
+
+    if (!student) {
+      return false;
+    }
+
+    return true;
+  }
+
   static associate(models) {
     this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
   }
